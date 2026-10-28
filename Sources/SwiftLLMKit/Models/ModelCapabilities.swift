@@ -262,10 +262,10 @@ public struct ModelCapabilities: Sendable, Equatable {
     private func has(_ capability: ModelCapability) -> Bool { states[capability] == true }
     private mutating func set(_ capability: ModelCapability, _ on: Bool) { states[capability] = on }
 
+    // Compatibility views over the tri-state capability map: an accessor is true only when its capability is known true.
+    // Unknown and known-false states both read as false; use state(of:) to distinguish them.
+    // Setting an accessor records an explicit known true or false value.
     /// Model can call tools. Frequently mis-reported as off for cloud/self-hosted models that do support it.
-    /// Compatibility views over the tri-state capability map: an accessor is `true` only when its capability is known true.
-    /// Unknown and known-false states both read as `false`; use ``state(of:)`` to distinguish them.
-    /// Setting an accessor records an explicit known true or false value.
     public var toolUse: Bool { get { has(.toolUse) } set { set(.toolUse, newValue) } }
     /// Model can accept images in the prompt. Off means a pasted image is rejected (HTTP 400).
     public var vision: Bool { get { has(.vision) } set { set(.vision, newValue) } }
